@@ -8,66 +8,46 @@ impl One {
     fn get_calibration(line: &str) -> u32 {
         let first = line
             .bytes()
-            .find(|&b| 48 <= b && b <= 57)
+            .find(|&b| b.is_ascii_digit())
             .expect("Should be at least one number?");
 
         let last = line
             .bytes()
-            .rfind(|&b| 48 <= b && b <= 57)
+            .rfind(|&b| b.is_ascii_digit())
             .expect("Should be at least one number?");
 
         (10 * (first - 48) + (last - 48)) as u32
     }
 
     fn get_calibration_p2(line: &str) -> u32 {
-        let first = Self::get_num(line, true);
+        const DIGITS: [&str; 9] = [
+            "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+        ];
 
-        let rev_line: String = line.chars().rev().collect();
-        let last = Self::get_num(&rev_line, false);
+        let mut first = None;
+        let mut last = 0;
 
-        (10 * first + last) as u32
-    }
+        // Simplify digit update
+        let mut digit = |b| {
+            first = first.or(Some(b));
+            last = b;
+        };
 
-    fn get_num(line: &str, forward: bool) -> u8 {
-        let mut seen = ['\0'; 5];
-
-        for c in line.chars() {
-            seen.rotate_left(1);
-            seen[4] = c;
-
-            if forward {
-                return match seen {
-                    [_, _, _, _, '0'..='9'] => c as u8 - b'0',
-                    [_, _, 'o', 'n', 'e'] => 1,
-                    [_, _, 't', 'w', 'o'] => 2,
-                    ['t', 'h', 'r', 'e', 'e'] => 3,
-                    [_, 'f', 'o', 'u', 'r'] => 4,
-                    [_, 'f', 'i', 'v', 'e'] => 5,
-                    [_, _, 's', 'i', 'x'] => 6,
-                    ['s', 'e', 'v', 'e', 'n'] => 7,
-                    ['e', 'i', 'g', 'h', 't'] => 8,
-                    [_, 'n', 'i', 'n', 'e'] => 9,
-                    _ => continue,
-                };
+        let chars = line.as_bytes();
+        for (i, b) in chars.iter().enumerate() {
+            if b.is_ascii_digit() {
+                digit(b - b'0');
             } else {
-                // Might be a nicer way then reversing here - could
-                return match seen {
-                    [_, _, _, _, '0'..='9'] => c as u8 - b'0',
-                    [_, _, 'e', 'n', 'o'] => 1,
-                    [_, _, 'o', 'w', 't'] => 2,
-                    ['e', 'e', 'r', 'h', 't'] => 3,
-                    [_, 'r', 'u', 'o', 'f'] => 4,
-                    [_, 'e', 'v', 'i', 'f'] => 5,
-                    [_, _, 'x', 'i', 's'] => 6,
-                    ['n', 'e', 'v', 'e', 's'] => 7,
-                    ['t', 'h', 'g', 'i', 'e'] => 8,
-                    [_, 'e', 'n', 'i', 'n'] => 9,
-                    _ => continue,
-                };
+                for (j, d) in DIGITS.iter().enumerate() {
+                    if chars[i..].starts_with(d.as_bytes()) {
+                        digit(j as u8 + 1);
+                    }
+                }
             }
         }
 
-        unreachable!("Every line should contain a number!")
+        let first = first.expect("Should be at least one digit");
+        (10 * first + last) as u32
     }
 }
 
