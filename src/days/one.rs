@@ -1,6 +1,6 @@
 use advent_of_code::Day;
 
-const SRC: &str = include_str!("../../static/day1input.txt");
+const SRC: &str = include_str!("../../input/day1.txt");
 
 pub struct One {}
 

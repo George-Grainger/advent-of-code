@@ -1,7 +1,7 @@
 use advent_of_code::Day;
 use std::collections::HashMap;
 
-const SRC: &str = include_str!("../../static/day2input.txt");
+const SRC: &str = include_str!("../../input/day3.txt");
 
 pub struct Two {}
 
