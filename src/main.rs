@@ -3,6 +3,6 @@ use advent_of_code::Day;
 pub mod days;
 
 fn main() {
-    days::Five::problem1();
-    days::Five::problem2();
+    days::Six::problem1();
+    days::Six::problem2();
 }

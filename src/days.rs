@@ -8,3 +8,5 @@ mod four;
 pub use four::Four;
 mod five;
 pub use five::Five;
+mod six;
+pub use six::Six;
