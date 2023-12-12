@@ -10,3 +10,5 @@ mod five;
 pub use five::Five;
 mod six;
 pub use six::Six;
+mod seven;
+pub use seven::Seven;
