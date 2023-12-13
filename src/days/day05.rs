@@ -1,10 +1,10 @@
 use advent_of_code::Day;
 
-const SRC: &str = include_str!("../../input/day5.txt");
+const SRC: &str = include_str!("../../input/day05.txt");
 
-pub struct Five {}
+pub struct Day05 {}
 
-impl Five {
+impl Day05 {
     fn get_maps() -> Vec<Vec<u64>> {
         SRC.split("\r\n\r\n")
             .map(|section| {
@@ -23,7 +23,7 @@ impl Five {
     }
 }
 
-impl Day for Five {
+impl Day for Day05 {
     fn problem1() {
         let maps = Self::get_maps();
         let seeds = &maps[0];

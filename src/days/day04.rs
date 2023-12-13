@@ -2,11 +2,11 @@ use std::collections::HashSet;
 
 use advent_of_code::Day;
 
-const SRC: &str = include_str!("../../input/day4.txt");
+const SRC: &str = include_str!("../../input/day04.txt");
 
-pub struct Four {}
+pub struct Day04 {}
 
-impl Four {
+impl Day04 {
     fn scores() -> impl Iterator<Item = u32> {
         SRC.lines()
             .map(|line| {
@@ -31,7 +31,7 @@ impl Four {
     }
 }
 
-impl Day for Four {
+impl Day for Day04 {
     fn problem1() {
         let total: u32 = Self::scores()
             .filter(|&c| c != 0)

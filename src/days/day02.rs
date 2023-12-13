@@ -1,11 +1,11 @@
 use advent_of_code::Day;
 use std::collections::HashMap;
 
-const SRC: &str = include_str!("../../input/day3.txt");
+const SRC: &str = include_str!("../../input/day02.txt");
 
-pub struct Two {}
+pub struct Day02 {}
 
-impl Two {
+impl Day02 {
     fn process_games() -> impl Iterator<Item = HashMap<&'static str, i32>> {
         SRC.lines()
             .map(|l| l.split(|c| c == ':' || c == ';').skip(1))
@@ -25,7 +25,7 @@ impl Two {
     }
 }
 
-impl Day for Two {
+impl Day for Day02 {
     fn problem1() {
         let mut maxes = HashMap::with_capacity(3);
         maxes.insert("red", 12);

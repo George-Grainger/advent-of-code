@@ -2,7 +2,7 @@ use std::{cmp::Ordering, collections::HashMap};
 
 use advent_of_code::Day;
 
-const SRC: &str = include_str!("../../input/day7.txt");
+const SRC: &str = include_str!("../../input/day07.txt");
 
 #[derive(Debug, PartialEq, PartialOrd)]
 enum Rank {
@@ -47,9 +47,9 @@ impl Rank {
     }
 }
 
-pub struct Seven {}
+pub struct Day07 {}
 
-impl Seven {
+impl Day07 {
     fn map_hand(hand: &str, is_p2: bool) -> [u8; 5] {
         hand.chars()
             .map(|c| match c {
@@ -119,7 +119,7 @@ impl Seven {
     }
 }
 
-impl Day for Seven {
+impl Day for Day07 {
     fn problem1() {
         let output = Self::solve_problem(false);
         println!("{:?}", output);

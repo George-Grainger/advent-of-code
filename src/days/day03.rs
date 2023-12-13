@@ -2,13 +2,11 @@ use std::collections::HashSet;
 
 use advent_of_code::Day;
 
-const SRC: &str = include_str!("../../input/day3.txt");
+const SRC: &str = include_str!("../../input/day03.txt");
 
-pub struct Three {}
+pub struct Day03 {}
 
-impl Three {}
-
-impl Day for Three {
+impl Day for Day03 {
     fn problem1() {
         const SYMBOLS: [char; 30] = [
             '-', '!', '$', '%', '^', '&', '*', '(', ')', '_', '+', '|', '~', '=', '`', '{', '}',

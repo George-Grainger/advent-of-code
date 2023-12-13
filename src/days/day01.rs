@@ -1,10 +1,10 @@
 use advent_of_code::Day;
 
-const SRC: &str = include_str!("../../input/day1.txt");
+const SRC: &str = include_str!("../../input/day01.txt");
 
-pub struct One {}
+pub struct Day01 {}
 
-impl One {
+impl Day01 {
     fn get_calibration(line: &str) -> u32 {
         let first = line
             .bytes()
@@ -51,7 +51,7 @@ impl One {
     }
 }
 
-impl Day for One {
+impl Day for Day01 {
     fn problem1() {
         let output: u32 = SRC.lines().map(Self::get_calibration).sum();
         println!("{:?}", output);

@@ -1,10 +1,10 @@
 use advent_of_code::Day;
 
-const SRC: &str = include_str!("../../input/day9.txt");
+const SRC: &str = include_str!("../../input/day09.txt");
 
-pub struct Nine {}
+pub struct Day09 {}
 
-impl Nine {
+impl Day09 {
     fn get_parsed_input() -> impl Iterator<Item = Vec<Vec<i32>>> {
         SRC.lines()
             .map(|line| {
@@ -71,7 +71,7 @@ impl Nine {
     }
 }
 
-impl Day for Nine {
+impl Day for Day09 {
     fn problem1() {
         let lines = Self::get_parsed_input();
 

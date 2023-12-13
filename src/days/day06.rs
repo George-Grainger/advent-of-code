@@ -1,12 +1,10 @@
 use advent_of_code::Day;
 
-const SRC: &str = include_str!("../../input/day6.txt");
+const SRC: &str = include_str!("../../input/day06.txt");
 
-pub struct Six {}
+pub struct Day06 {}
 
-impl Six {}
-
-impl Day for Six {
+impl Day for Day06 {
     fn problem1() {
         // Parse the input
         let mut data = SRC

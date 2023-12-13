@@ -3,7 +3,7 @@ use std::collections::HashMap;
 
 use advent_of_code::Day;
 
-const SRC: &str = include_str!("../../input/day8.txt");
+const SRC: &str = include_str!("../../input/day08.txt");
 
 #[derive(Debug)]
 struct MapEntry<'a> {
@@ -20,9 +20,9 @@ impl<'a> MapEntry<'a> {
     }
 }
 
-pub struct Eight {}
+pub struct Day08 {}
 
-impl Eight {
+impl Day08 {
     fn parse_input() -> (&'static str, HashMap<&'static str, MapEntry<'static>>) {
         let mut lines = SRC.lines();
         let directions = lines
@@ -49,7 +49,7 @@ impl Eight {
     }
 }
 
-impl Day for Eight {
+impl Day for Day08 {
     fn problem1() {
         let (directions, map) = Self::parse_input();
 
