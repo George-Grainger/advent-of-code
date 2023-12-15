@@ -18,60 +18,8 @@ impl Day11 {
     fn coord_diff(p1: &(usize, usize), p2: &(usize, usize)) -> usize {
         Self::abs_diff(p1.0, p2.0) + Self::abs_diff(p1.1, p2.1)
     }
-}
 
-impl Day for Day11 {
-    fn problem1() {
-        // Create map with expanded rows
-        let mut map: Vec<Vec<char>> = SRC
-            .lines()
-            .flat_map(|line| {
-                if line.contains('#') {
-                    vec![line]
-                } else {
-                    vec![line, line]
-                }
-            })
-            .map(|line| line.chars().collect())
-            .collect();
-
-        // Expand columns on map
-        let mut i = 0;
-        while i < map[0].len() {
-            if map.iter().map(|row| row[i]).all(|c| c == '.') {
-                for row in map.iter_mut() {
-                    row.insert(i, '.')
-                }
-                i += 1;
-            }
-            i += 1;
-        }
-
-        // Get galaxy coordinates
-        let galaxy_coords: HashSet<_> = map
-            .into_iter()
-            .enumerate()
-            .flat_map(|(y, row)| {
-                row.into_iter()
-                    .enumerate()
-                    .filter(|(_, c)| *c == '#')
-                    .map(move |(x, _)| (x, y))
-            })
-            .collect();
-
-        // Calcuate distances
-        let mut distance = 0;
-        for (i, galaxy1) in galaxy_coords.iter().enumerate() {
-            for galaxy2 in galaxy_coords.iter().skip(i) {
-                distance += Self::coord_diff(galaxy1, galaxy2);
-            }
-        }
-
-        println!("{}", distance);
-    }
-
-    fn problem2() {
-        let dilation = 1_000_000;
+    fn get_total_distance(dilation: usize) -> usize {
         let map: Vec<Vec<_>> = SRC.lines().map(|line| line.chars().collect()).collect();
 
         let empty_rows: HashSet<_> = map
@@ -110,6 +58,17 @@ impl Day for Day11 {
                 distance += Self::coord_diff(galaxy1, galaxy2);
             }
         }
-        println!("{:?}", distance);
+
+        distance
+    }
+}
+
+impl Day for Day11 {
+    fn problem1() {
+        println!("{}", Self::get_total_distance(2));
+    }
+
+    fn problem2() {
+        println!("{}", Self::get_total_distance(1_000_000));
     }
 }
