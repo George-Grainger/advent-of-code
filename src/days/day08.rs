@@ -23,6 +23,29 @@ impl<'a> MapEntry<'a> {
 pub struct Day08 {}
 
 impl Day08 {
+    // Find GCD
+    fn gcd(mut a: usize, mut b: usize) -> usize {
+        if a == b {
+            return a;
+        }
+        if b > a {
+            let temp = a;
+            a = b;
+            b = temp;
+        }
+        while b > 0 {
+            let temp = a;
+            a = b;
+            b = temp % b;
+        }
+        return a;
+    }
+
+    fn lcm(a: usize, b: usize) -> usize {
+        // LCM = a*b / gcd
+        return a * (b / Self::gcd(a, b));
+    }
+
     fn parse_input() -> (&'static str, HashMap<&'static str, MapEntry<'static>>) {
         let mut lines = SRC.lines();
         let directions = lines
@@ -82,7 +105,6 @@ impl Day for Day08 {
         // Track seen and index into array
         let mut pres = Vec::with_capacity(locations.len());
         let mut posts = Vec::with_capacity(locations.len());
-        let mut loop_sizes = Vec::with_capacity(locations.len());
 
         for start in locations.into_iter() {
             let mut location = start;
@@ -101,7 +123,6 @@ impl Day for Day08 {
                     if let Some(&split) = seen.get(&(location, pos)) {
                         pres.push(seen_at[..split].to_vec());
                         posts.push(seen_at[split..].to_vec());
-                        loop_sizes.push((total - seen_at[split]) + 1);
                         break;
                     }
                     seen.insert((location, pos), seen_at.len());
@@ -124,24 +145,13 @@ impl Day for Day08 {
             return;
         }
 
-        let posts = posts
-            .into_iter()
-            .zip(loop_sizes)
-            .reduce(|(acc, _), (curr, len)| {
-                let joint = acc
-                    .into_iter()
-                    .flat_map(|val| {
-                        let x = curr.iter().filter_map(move |offset| {
-                            (0..val).map(|n| len * n + offset).find(|n| n % val == 0)
-                        });
-                        x
-                    })
-                    .collect();
-                (joint, usize::default())
-            });
-        let posts = posts.unwrap_or_default().0;
+        let posts = posts.into_iter().reduce(|acc, curr| {
+            acc.into_iter()
+                .flat_map(|val| curr.iter().map(move |&offset| Self::lcm(val, offset)))
+                .collect()
+        });
+        let posts = posts.unwrap_or_default();
         let min = posts.iter().min().expect("Should be a minimum value");
         println!("{:?}", min);
-        // println!("{:?}", (0..2).map(|n| 6 * n + 6).find(|n| n % 2 == 0));
     }
 }
