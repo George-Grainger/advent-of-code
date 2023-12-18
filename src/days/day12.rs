@@ -1,5 +1,3 @@
-use std::io::repeat;
-
 use advent_of_code::Day;
 
 const SRC: &str = include_str!("../../input/day12.txt");
