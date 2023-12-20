@@ -5,7 +5,7 @@ use std::{
     collections::{BinaryHeap, HashMap},
 };
 
-const SRC: &str = include_str!("../../input/test.txt");
+const SRC: &str = include_str!("../../input/day17.txt");
 
 pub type Coord = (usize, usize);
 
@@ -17,7 +17,7 @@ enum Direction {
     East,
 }
 
-#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+#[derive(Debug, Copy, Clone, Eq, PartialEq)]
 struct Visit {
     cost: u32,
     position: Coord,
@@ -48,6 +48,23 @@ impl PartialOrd for Visit {
     }
 }
 
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+struct VisitKey {
+    position: Coord,
+    direction: Direction,
+    steps: u8,
+}
+
+impl From<Visit> for VisitKey {
+    fn from(value: Visit) -> Self {
+        Self {
+            position: value.position,
+            direction: value.direction,
+            steps: value.steps,
+        }
+    }
+}
+
 struct Graph<'a> {
     grid: &'a Vec<Vec<u32>>,
     height: usize,
@@ -69,14 +86,14 @@ impl<'a> Graph<'a> {
 impl Graph<'_> {
     fn dijkstra(&self, start: Coord, end: Coord, min_step: u8, max_step: u8) -> Option<u32> {
         // Create structures for tracking
-        let mut dist = HashMap::<Visit, u32>::new();
+        let mut dist = HashMap::<VisitKey, u32>::new();
         let mut heap = BinaryHeap::new();
 
         // Create the starting positions
         let v1 = Visit::new(0, start, East, 0);
         let v2 = Visit::new(0, start, South, 0);
-        dist.insert(v1, 0);
-        dist.insert(v2, 0);
+        dist.insert(v1.into(), 0);
+        dist.insert(v2.into(), 0);
         heap.push(v1);
         heap.push(v2);
 
@@ -94,7 +111,7 @@ impl Graph<'_> {
                 return Some(cost);
             }
 
-            if dist.get(&state).map_or(false, |&c| c < cost) {
+            if dist.get(&state.into()).map_or(false, |&c| c < cost) {
                 continue;
             }
 
@@ -109,10 +126,11 @@ impl Graph<'_> {
                         1
                     },
                 };
-                if next.steps <= max_step && dist.get(&next).map_or(true, |&c| next.cost < c) {
+                if next.steps <= max_step && dist.get(&next.into()).map_or(true, |&c| next.cost < c)
+                {
                     if next.direction == direction || steps >= min_step {
                         heap.push(next);
-                        dist.insert(next, next.cost);
+                        dist.insert(next.into(), next.cost);
                     }
                 }
             }
